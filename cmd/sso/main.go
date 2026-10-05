@@ -16,20 +16,15 @@ const (
 )
 
 func main() {
-	// TODO конфиг
 	cfg := config.MustLoad()
 
-	// логгер
 	log := setupLogger(cfg.Env)
 	log.Info("starting applicaton",
 		slog.Any("cfg", cfg),
 	)
-	// инициализация app
 	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
 
 	go application.GRPCSrv.MustRun()
-
-	// Graceful shutdown
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)

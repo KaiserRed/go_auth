@@ -18,12 +18,10 @@ func New(
 	storagePath string,
 	tokenTTL time.Duration,
 ) *App {
-	//инициализация хранилища
 	storage, err := sqlite.New(storagePath)
 	if err != nil {
 		panic(err)
 	}
-	//init auth service
 	authService := auth.New(log, storage, storage, storage, tokenTTL)
 	grpcApp := grpcapp.New(log, authService, grpcPort)
 
