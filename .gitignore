@@ -1,1 +1,4 @@
 storage/
+.cache/
+bin/
+.task/

@@ -7,6 +7,7 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.28.0
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/golang-migrate/migrate/v4 v4.20.1
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.4
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	github.com/mattn/go-sqlite3 v1.14.52
 	github.com/stretchr/testify v1.12.1

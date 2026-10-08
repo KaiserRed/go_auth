@@ -28,6 +28,15 @@ func New(storagePath string) (*Storage, error) {
 	return &Storage{db: db}, nil
 }
 
+// Stop closes the database connection.
+func (s *Storage) Stop() error {
+	if err := s.db.Close(); err != nil {
+		return fmt.Errorf("storage.sqlite.Stop: %w", err)
+	}
+
+	return nil
+}
+
 // SaveUser saves user to db.
 func (s *Storage) SaveUser(ctx context.Context, email string, passHash []byte) (int64, error) {
 	const op = "storage.sqlite.SaveUser"
@@ -41,7 +50,6 @@ func (s *Storage) SaveUser(ctx context.Context, email string, passHash []byte) (
 	if err != nil {
 		var sqliteErr sqlite3.Error
 
-		// Небольшое кунг-фу для выявления ошибки ErrConstraintUnique
 		if errors.As(err, &sqliteErr) && sqliteErr.ExtendedCode == sqlite3.ErrConstraintUnique {
 			return 0, fmt.Errorf("%s: %w", op, storage.ErrUserExists)
 		}
@@ -97,7 +105,7 @@ func (s *Storage) IsAdmin(ctx context.Context, userID int64) (bool, error) {
 	err = row.Scan(&isAdmin)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return false, fmt.Errorf("%s: %w", op, storage.ErrAppNotFound)
+			return false, fmt.Errorf("%s: %w", op, storage.ErrUserNotFound)
 		}
 
 		return false, fmt.Errorf("%s: %w", op, err)

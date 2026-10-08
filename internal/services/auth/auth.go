@@ -43,8 +43,7 @@ type AppProvider interface {
 }
 
 var (
-	ErrInvalidCredentials = errors.New("invalid crederntials")
-	ErrInvalidAppID       = errors.New("invalid app id")
+	ErrInvalidCredentials = errors.New("invalid credentials")
 	ErrUserExists         = errors.New("user exists")
 	ErrUserNotFound       = errors.New("user not found")
 )
@@ -155,9 +154,9 @@ func (a *Auth) IsAdmin(ctx context.Context, userID int64) (bool, error) {
 
 	isAdmin, err := a.usrProvider.IsAdmin(ctx, userID)
 	if err != nil {
-		if errors.Is(err, storage.ErrAppNotFound) {
-			a.log.Warn("app not found", sl.Err(err))
-			return false, fmt.Errorf("%s: %w", op, ErrInvalidAppID)
+		if errors.Is(err, storage.ErrUserNotFound) {
+			a.log.Warn("user not found", sl.Err(err))
+			return false, fmt.Errorf("%s: %w", op, ErrUserNotFound)
 		}
 		return false, fmt.Errorf("%s: %w", op, err)
 	}

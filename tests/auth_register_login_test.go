@@ -59,7 +59,7 @@ func TestRegisterLogin_Login_HappythPath(t *testing.T) {
 
 	const deltaSecondts = 1
 
-	assert.InDelta(t, loginTime.Add(st.Cfg.TokenTTL).Unix(), claims["exp"].(float64), deltaSecondts)
+	assert.InDelta(t, loginTime.Add(suite.TokenTTL).Unix(), claims["exp"].(float64), deltaSecondts)
 }
 
 func TestRegisterLogin_DuplicatedRegistration(t *testing.T) {
